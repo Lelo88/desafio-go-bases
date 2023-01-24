@@ -1,9 +1,17 @@
 package main
 
 import (
-	"github.com/bootcamp-go/desafio-go-bases/internal/tickets"
+	"fmt"
+
+	"github.com/Lelo88/desafio-go-bases/internal/tickets"
 )
 
 func main() {
 	total, err := tickets.GetTotalTickets("Brazil")
+	tickets.LoadTicketsCSV()
+	if err!= nil {
+		panic(err)
+	}
+
+	fmt.Println(total)
 }

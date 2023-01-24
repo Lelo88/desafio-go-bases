@@ -3,7 +3,6 @@ package tickets
 import (
 	"encoding/csv"
 	"errors"
-	"fmt"
 	"io"
 	"log"
 	"os"
@@ -103,7 +102,6 @@ func GetMornings(time string) (int, error) {
 	horasPersonas := 0
 	hora := strings.Split(time, ":")
 	horaint,_ := strconv.ParseInt(hora[0], 10, 64)
-	fmt.Println(hora)
 
 	for _, ticket := range ticketsAmemoria {
 		horaSalida := strings.Split(ticket.Departure, ":")
@@ -130,4 +128,13 @@ func GetMornings(time string) (int, error) {
 }
 
 // ejemplo 3
-func AverageDestination(destination string, total int) (int,error) {return 0,nil}
+func AverageDestination(destination string) (float64,error) {
+	
+	totalTickets, err := GetTotalTickets(destination)
+
+	if err!= nil {
+		return float64(totalTickets), err
+	}
+
+	return float64(totalTickets) / float64(len(ticketsAmemoria)), nil
+}

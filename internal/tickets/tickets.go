@@ -2,11 +2,13 @@ package tickets
 
 import (
 	"encoding/csv"
+	"errors"
 	"fmt"
 	"io"
 	"log"
 	"os"
 	"strconv"
+	"strings"
 )
 
 //import "encoding/csv"
@@ -74,10 +76,6 @@ func LoadTicketsCSV() {
 		i++
 
 	}
-
-	for _, v := range ticket {
-		fmt.Println(v)
-	}
 	
 }
 
@@ -86,10 +84,50 @@ func (t *Ticket) Save(){
 }
 
 // ejemplo 1
-func GetTotalTickets(destination string) (int,error) { return 0, nil }
+func GetTotalTickets(destination string) (int,error) { 
+	
+	totalPaises := 0
+
+	for _, ticket := range ticketsAmemoria {
+		if ticket.DestinyCountry == destination {
+			totalPaises ++
+		}
+	}
+	
+	return totalPaises, nil 
+}
 
 // ejemplo 2
-func GetMornings(time string) (int, error) {return 0, nil}
+func GetMornings(time string) (int, error) {
+	
+	horasPersonas := 0
+	hora := strings.Split(time, ":")
+	horaint,_ := strconv.ParseInt(hora[0], 10, 64)
+	fmt.Println(hora)
+
+	for _, ticket := range ticketsAmemoria {
+		horaSalida := strings.Split(ticket.Departure, ":")
+		horaSalidaInt,_ := strconv.ParseInt(horaSalida[0],10,64)
+
+			if horaint == horaSalidaInt{
+				switch{
+				case horaSalidaInt >= 0 && horaSalidaInt <= 6:
+					horasPersonas++
+				case horaSalidaInt >= 7 && horaSalidaInt <= 12:
+					horasPersonas++
+				case horaSalidaInt >= 13 && horaSalidaInt <=19:
+					horasPersonas++
+				case horaSalidaInt >= 20 && horaSalidaInt <= 23:
+					horasPersonas++
+				default:
+					return 0, errors.New("no se encuentra el horario especificado")	
+				}
+			}
+	}
+	//horaSalida := strings.Split(, ":")
+
+	return horasPersonas, nil
+}
 
 // ejemplo 3
 func AverageDestination(destination string, total int) (int,error) {return 0,nil}
